@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace LSLib.LS.Story
@@ -117,6 +118,11 @@ namespace LSLib.LS.Story
             if (GoalIdOrDebugHook > 0)
             {
                 writer.Write("GoalCompleted");
+            }
+
+            if (GoalIdOrDebugHook < 0)
+            {
+                writer.Write("!{0}", -GoalIdOrDebugHook); // debug hook
             }
         }
     }

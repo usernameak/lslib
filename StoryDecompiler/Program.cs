@@ -60,6 +60,7 @@ namespace LSTools.StoryDecompiler
                     break;
 
                 case ".osi":
+                case ".000":
                     storyStream = LoadStoryStreamFromFile(path);
                     break;
 

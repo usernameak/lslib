@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 
 namespace LSLib.LS.Story
 {
@@ -15,7 +16,8 @@ namespace LSLib.LS.Story
             Integer64 = 2,
             Float = 3,
             String = 4,
-            GuidString = 5
+            GuidString = 5,
+            SpecialObject = 255 // hack for DD/BD
         }
 
         // Original Sin 1 (v1.0 - v1.7) Type ID-s
@@ -24,7 +26,8 @@ namespace LSLib.LS.Story
             None = 0,
             Integer = 1,
             Float = 2,
-            String = 3
+            String = 3,
+            SpecialObject = 255 // hack for DD/BD
         }
 
         public UInt32 TypeId;
@@ -282,6 +285,10 @@ namespace LSLib.LS.Story
         public virtual void DebugDump(TextWriter writer, Story story)
         {
             var builtinTypeId = story.FindBuiltinTypeId(TypeId);
+            if (story.MajorVersion < 1 || (story.MajorVersion <= 1 && story.MajorVersion <= 4))
+            {
+                builtinTypeId = ConvertOS1ToOS2Type(builtinTypeId);
+            }
 
             switch ((Type)builtinTypeId)
             {
@@ -306,6 +313,7 @@ namespace LSLib.LS.Story
                     break;
 
                 case Type.GuidString:
+                case Type.SpecialObject:
                     writer.Write(StringValue);
                     break;
 
@@ -317,6 +325,10 @@ namespace LSLib.LS.Story
         public virtual void MakeScript(TextWriter writer, Story story, Tuple tuple, bool printTypes = false)
         {
             var builtinTypeId = story.FindBuiltinTypeId(TypeId);
+            if (story.MajorVersion < 1 || (story.MajorVersion <= 1 && story.MajorVersion <= 4))
+            {
+                builtinTypeId = ConvertOS1ToOS2Type(builtinTypeId);
+            }
 
             switch ((Type)builtinTypeId)
             {
@@ -332,7 +344,7 @@ namespace LSLib.LS.Story
                     break;
 
                 case Type.Float:
-                    writer.Write((decimal)FloatValue);
+                    writer.Write(((decimal)FloatValue).ToString("0.0##########", CultureInfo.InvariantCulture));
                     break;
 
                 case Type.String:
@@ -340,6 +352,7 @@ namespace LSLib.LS.Story
                     break;
 
                 case Type.GuidString:
+                case Type.SpecialObject:
                     writer.Write(StringValue);
                     break;
 

@@ -224,7 +224,7 @@
             // storyPathDlg
             // 
             this.storyPathDlg.CheckFileExists = false;
-            this.storyPathDlg.Filter = "LS story/savegame files|*.osi;*.lsv";
+            this.storyPathDlg.Filter = "LS story/savegame files|*.osi;*.lsv;*.000";
             // 
             // btnDebugExport
             // 

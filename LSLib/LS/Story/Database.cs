@@ -87,6 +87,7 @@ namespace LSLib.LS.Story
                     case Value.Type.Integer64: return typeof(Int64);
                     case Value.Type.Float: return typeof(Single);
                     case Value.Type.String:
+                    case Value.Type.SpecialObject:
                     case Value.Type.GuidString: return typeof(String);
                     case Value.Type.None:
                     default: throw new InvalidOperationException("Cannot retrieve type of an unknown column");

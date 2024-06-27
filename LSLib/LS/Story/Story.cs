@@ -110,6 +110,28 @@ namespace LSLib.LS.Story
 
     public class StoryReader
     {
+        public static readonly string[] DD_TYPES = {
+            "___INVALID_TYPE___",
+            "INTEGER",
+            "REAL",
+            "STRING",
+            "NPC",
+            "OBJECT",
+            "DIALOG",
+            "REGION",
+            "LOCATION",
+            "NPC_CLASS",
+            "OBJECT_CLASS",
+            "DIALOG_EVENT",
+            "ENGINE",
+            "FUNCTION",
+            "TYPE_14",
+            "SREGION",
+            "TYPE_16",
+            "TYPE_17",
+        };
+
+
         public StoryReader()
         {
 
@@ -342,16 +364,20 @@ namespace LSLib.LS.Story
                     story.Types[2] = OsirisType.MakeBuiltin(2, "FLOAT");
                     story.Types[3] = OsirisType.MakeBuiltin(3, "STRING");
 
-                    // Populate custom type IDs for versions that had no type alias map
+                    // Populate custom type IDs for versions that had no type alias map.
+                    // One of the versions that did not have it is 1.4 used in
+                    // DivineDivinity/BeyondDivinity, let's hardcode some of the types ;)
                     if (reader.Ver < OsiVersion.VerAddTypeMap)
                     {
                         for (byte typeId = 4; typeId <= 17; typeId++)
                         {
-                            story.Types[typeId] = OsirisType.MakeBuiltin(typeId, $"TYPE{typeId}");
-                            story.Types[typeId].Alias = 3;
-                            reader.TypeAliases.Add(typeId, 3);
+                            story.Types[typeId] = OsirisType.MakeBuiltin(typeId, DD_TYPES[typeId]);
+                            story.Types[typeId].Alias = 255;
+                            reader.TypeAliases.Add(typeId, 255);
                         }
                     }
+
+                    story.Types[255] = OsirisType.MakeBuiltin(255, "YOU_SHOULD_NEVER_SEE_THIS_IN_THE_CODE");
                 }
 
                 if (reader.Ver >= OsiVersion.VerEnums)

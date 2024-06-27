@@ -129,6 +129,7 @@ namespace ConverterApp
                     break;
                 }
                 case ".osi":
+                case ".000":
                 {
                     using (var file = new FileStream(storyFilePath.Text, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
@@ -258,6 +259,7 @@ namespace ConverterApp
                     MessageBox.Show("Save game database save successful.");
                     break;
                 }
+                case ".000":
                 case ".osi":
                 {
                     SaveStory();
